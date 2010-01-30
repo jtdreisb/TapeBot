@@ -1,0 +1,24 @@
+//LCD special characters.
+//Can be printed using printChar().
+#define RIGHT_ARROW  0x7E
+#define LEFT_ARROW   0x7F
+#define START_FRAME  0xA2
+#define END_FRAME    0xA3
+#define SEPARATOR    0xA5
+#define EMPTY_BOX    0xDB
+#define ALPHA        0xE0
+#define BETA         0xE2
+#define EPSILON      0xE3
+#define MU           0xE4
+#define SMALL_SIGMA  0xE5
+#define RHO          0xE6
+#define SQRT_SYMBOL  0xE8
+#define CENT_SYMBOL  0xEC
+#define THETA        0xF2
+#define INFINITY     0xF3
+#define OMEGA        0xF4
+#define BIG_SIGMA    0xF6
+#define PI_SYMBOL    0xF7
+#define X_OVERBAR    0xF8
+#define DIVISION     0xFD
+#define BLACK_SQUARE 0xFF
