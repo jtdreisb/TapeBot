@@ -1,6 +1,5 @@
 #include "../XiphosLibrary/globals.h"
 #include "serial.h"
-//#include "../XiphosLibrary/utility.c"
 #include <inttypes.h>
 #include <avr/interrupt.h>    // include interrupt support
 #include <avr/io.h>           // include I/O definitions (port names, pin names, etc)
@@ -135,8 +134,10 @@ void executeFunction()
 			break;
 	   case BRAKE0:
 	        brake0();
-	        break;
-	        
+	   break;
+	   case BRAKE1:
+	        brake1();
+	   break;     
 		//single-parameter functions
 		case DELAY_MS:
 			delayMs(parse_u16()); break;
@@ -150,12 +151,15 @@ void executeFunction()
 		//two-parameter functions
 		case SET_SERVO_POS:
 			u16temp = parse_u16();
-			//set_servo_position(u16temp>>8, (u08)u16temp);
+			servo(u16temp>>8,(u08)u16temp);
 			break;
 		case MOTOR0:
 			u16temp = parse_u16();
 			motor0((u08)u16temp);
-			//set_motor_power(u16temp>>8, (u08)u16temp);
+			break;
+		case MOTOR1:
+			u16temp = parse_u16();
+			motor1((u08)u16temp);
 			break;
 		case LCD_CURSOR:
 			u16temp = parse_u16();

@@ -24,6 +24,7 @@
 #define KNOB             10
 #define SOFT_RESET       11
 #define BRAKE0           12
+#define BRAKE1           13
 
 //single-parameter functions
 #define DELAY_MS        20
@@ -37,3 +38,4 @@
 #define SET_SERVO_POS   30
 #define MOTOR0          31
 #define LCD_CURSOR      32
+#define MOTOR1          33

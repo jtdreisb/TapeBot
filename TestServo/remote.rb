@@ -9,7 +9,7 @@ require 'rubygems'
 require 'serialport'
 
 class Xiphos
-   def initialize( p = '/dev/rfcomm0',  b = 9600)
+   def initialize( p = '/dev/tty.BT-SPP',  b = 9600)
        @ser = SerialPort.new( p,b,8 )
    end
    
@@ -60,11 +60,6 @@ class Xiphos
       @ser.putc speed
       
    end
-   def servo0( pos )
-      @ser.putc(30)
-      @ser.putc 0
-      @ser.putc pos.to_i
-   end
    def print( s )
       @ser.putc 22
       s.each_char { |c|
@@ -89,10 +84,9 @@ while true
       when 'clearScreen'   : x.clearScreen
       when 'nextLine'      : x.nextLine
       when 'button?'       : puts("Button = #{x.button?}")
-      when 'r'             : x.softReset
+      when 'softReset','s' : x.softReset
       when 'move', 'm','f' : x.move(command[1])
       when 'brake', 'b'    : x.brake
-      when 's'             : x.servo0(command[1])
       when 'print', 'p'    :  
          if command.length > 1
             x.print(command[1])

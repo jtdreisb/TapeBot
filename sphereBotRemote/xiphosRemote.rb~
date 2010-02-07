@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #Awesome ruby
-
+# http://xkcd.com/413/
 #puts e.to_a #To array
 
 
@@ -53,6 +53,11 @@ class Xiphos
       @motorSpeed = 127      
       puts "Braking…"
    end
+   def brake1
+      @ser.putc 13
+      @motorSpeed = 127      
+      puts "Braking…"
+   end
    
    def move( speed )
       if( speed == nil)
@@ -70,9 +75,21 @@ class Xiphos
       @ser.putc @motorSpeed
       @ser.putc @motorSpeed
    end
-   def fullReverse
+   def fullForward1
       @motorSpeed = 255
+      @ser.putc 33
+      @ser.putc @motorSpeed
+      @ser.putc @motorSpeed
+   end
+   def fullReverse
+      @motorSpeed = 0
       @ser.putc 31
+      @ser.putc @motorSpeed
+      @ser.putc @motorSpeed
+   end
+   def fullReverse
+      @motorSpeed = 0
+      @ser.putc 33
       @ser.putc @motorSpeed
       @ser.putc @motorSpeed
    end
@@ -117,8 +134,11 @@ if __FILE__ == $0
          when 'f'             : x.faster
          when 's'             : x.slower
          when 'p'             : x.fullForward
+         when 'g'             : x.fullForward1
+         when 'h'             : x.fullReverse1
          when 'o'             : x.fullReverse
          when 'brake', 'b'    : x.brake
+         when 'b1'            : x.brake1
          when 'print'         :  
             if command.length > 1
                x.print(command[1])

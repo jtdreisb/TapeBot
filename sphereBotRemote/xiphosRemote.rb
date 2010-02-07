@@ -53,6 +53,11 @@ class Xiphos
       @motorSpeed = 127      
       puts "Braking…"
    end
+   def brake1
+      @ser.putc 13
+      @motorSpeed = 127      
+      puts "Braking…"
+   end
    
    def move( speed )
       if( speed == nil)
@@ -70,11 +75,28 @@ class Xiphos
       @ser.putc @motorSpeed
       @ser.putc @motorSpeed
    end
-   def fullReverse
+   def fullForward1
       @motorSpeed = 255
+      @ser.putc 33
+      @ser.putc @motorSpeed
+      @ser.putc @motorSpeed
+   end
+   def fullReverse
+      @motorSpeed = 0
       @ser.putc 31
       @ser.putc @motorSpeed
       @ser.putc @motorSpeed
+   end
+   def fullReverse
+      @motorSpeed = 0
+      @ser.putc 33
+      @ser.putc @motorSpeed
+      @ser.putc @motorSpeed
+   end
+   def servo0( pos )
+      @ser.putc(30)
+      @ser.putc 0
+      @ser.putc pos.to_i
    end
    def faster
       @motorSpeed += 15      
@@ -112,13 +134,17 @@ if __FILE__ == $0
          when 'clearScreen'   : x.clearScreen
          when 'nextLine'      : x.nextLine
          when 'button?'       : puts("Button = #{x.button?}")
-         when 'softReset','s' : x.softReset
+         when 'r'             : x.softReset
          when 'move', 'm'     : x.move(command[1])
          when 'f'             : x.faster
-         when 's'             : x.slower
+         when 'slo'           : x.slower
          when 'p'             : x.fullForward
+         when 'g'             : x.fullForward1
+         when 'h'             : x.fullReverse1
          when 'o'             : x.fullReverse
+         when 's'             : x.servo0(command[1])
          when 'brake', 'b'    : x.brake
+         when 'b1'            : x.brake1
          when 'print'         :  
             if command.length > 1
                x.print(command[1])
