@@ -12,7 +12,7 @@
 #define USE_ADC     1
 #define USE_MOTOR0  1
 #define USE_MOTOR1  1
-#define NUM_SERVOS  1 //valid values: 0-8
+#define NUM_SERVOS  8 //valid values: 0-8
 #define USE_I2C     0
 #define USE_SPI     1
 #define USE_UART0   1

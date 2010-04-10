@@ -65,8 +65,8 @@ class Xiphos
       end
       puts "Now Moving at #{speed}"
       @ser.putc 31
-      @ser.putc speed
-      @ser.putc speed
+      @ser.putc speed.to_i
+      @ser.putc speed.to_i 
       
    end
    def fullForward
@@ -94,9 +94,13 @@ class Xiphos
       @ser.putc @motorSpeed
    end
    def servo0( pos )
-      @ser.putc(30)
+      @ser.putc 30
       @ser.putc 0
       @ser.putc pos.to_i
+      @ser.putc 30
+      @ser.putc 1
+      @ser.putc(255-pos.to_i)
+      puts "#{(255-pos.to_i)}"
    end
    def faster
       @motorSpeed += 15      
