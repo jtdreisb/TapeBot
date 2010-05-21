@@ -111,12 +111,6 @@ void executeFunction()
 		case LED_OFF:
          ledOff();
          break;
-//		case RELAY_ON:
-//			relayOn();
-//	      break;
-//		case RELAY_OFF:
-//			relayOff();
-//			break;
 		case LCD_ON:
 			lcdOn();
 			break;

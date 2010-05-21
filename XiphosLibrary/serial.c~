@@ -151,7 +151,7 @@ void executeFunction()
 		//two-parameter functions
 		case SET_SERVO_POS:
 			u16temp = parse_u16();
-			servo(u16temp,(u08)u16temp);
+			servo(u16temp>>8,(u08)u16temp);
 			break;
 		case MOTOR0:
 			u16temp = parse_u16();
