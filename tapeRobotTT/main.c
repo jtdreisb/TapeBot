@@ -2,18 +2,24 @@
 
 #include "../XiphosLibrary/globals.h"
 
-#define kTHRESHOLD_HIGH 100
+#define kTHRESHOLD_HIGH 130
 #define kTHRESHOLD_LOW  70
 
 void getOutOfStartBox(); //does an S move to get out of the box
-void driveOuterSquare(); 
+void makeRightTurn(u08 r);
+void turnTheCorner(); 
+void plowTheCenter();
 void countLines(u08 sensor,u08 numLines); // counts till the sensor hits the black
 void waitLines(u08 sensor,u08 numLines); // waits till the sensor is off the line
-int findInnerSquare();
+void squareBackSensors();
+int  findInnerSquare();
 void move(s08 speed);
+void reverse(u08 speed);
 void brake();
 void spinRight(s08 delta);
 void initInterrupts();
+void gateClose();
+void gateOpen();
 
 
 int main()
@@ -21,10 +27,13 @@ int main()
 	initialize();
 	cli();
 	
+	initInterrupts();
+	
 	//Test 1
 	clearScreen();
 	printString("    TapeBot V1.0  ");
 	lowerLine();
+	
 	
 	//Turn motors on and wait until not against wall to turn on interrupt
 	sei();
@@ -33,13 +42,15 @@ int main()
 	//Drive around and don't crash
 	getOutOfStartBox();
 	
-	driveOuterSquare();
-	buttonWait();
+	makeRightTurn(1);
+
 	
+	plowTheCenter();
+	makeRightTurn(0);
+	turnTheCorner();
+	makeRightTurn(1);
+	plowTheCenter();
 	
-	move(70);
-	delayMs(2000);
-	brake();
 	
 	clearScreen();
 	printString("Yay it Finished");
@@ -50,23 +61,50 @@ int main()
 
 void getOutOfStartBox() {
 	motor0(70);
-	motor1(90);
-	delayMs(300);
+	motor1(80);
+	countLines(TBSENSOR_IR_FRONT,1);
 	move(70);
-	delayMs(100);
 }
 
-void driveOuterSquare() {
+void makeRightTurn(u08 r) {
 	
 	move(60);
-	countLines(TBSENSOR_IR_FRONT, 2);
-	delayMs(100);
+	countLines(TBSENSOR_IR_FRONT, 1); 
 	brake();
 	spinRight(40);
 	countLines(TBSENSOR_IR_LEFT, 2);
+	if (r) {
+		reverse(60);
+		delayMs(200);
+	}
+	squareBackSensors();
 	brake();
-	motor1(90);
-	countLines(TBSENSOR_IR_RIGHT,1);
+	
+}
+
+void turnTheCorner() {
+	brake();
+	clearScreen();
+	upperLine();
+	printString("Turning!");
+	
+	move(70);
+	countLines(TBSENSOR_IR_FRONT, 2);
+	spinRight(40);
+	countLines(TBSENSOR_IR_RIGHT, 1);
+	motor0(80);
+	delayMs(400);
+	brake();
+	move(80);
+	countLines(TBSENSOR_IR_FRONT, 1);
+}
+
+void plowTheCenter() {
+	cli();
+	move(120);
+	countLines(TBSENSOR_IR_FRONT, 4);
+	sei();
+	countLines(TBSENSOR_IR_FRONT, 1);
 	brake();
 	
 }
@@ -133,6 +171,55 @@ void waitLines(u08 sensor,u08 numLines) {
 }
 
 
+void squareBackSensors() {
+	u08 rVal,lVal;
+	u08 onLine = 0;
+	upperLine();
+	printString("Left  |   Right ");
+	
+	move(50);
+	
+	while(onLine < 3) {
+		lVal = analog(TBSENSOR_IR_LEFT);
+		rVal = analog(TBSENSOR_IR_RIGHT);
+		
+		lcdCursor(1,2);
+		print_u08(lVal);
+		lcdCursor(1,9);
+		print_u08(rVal);
+		
+		if(lVal > kTHRESHOLD_HIGH) {
+			brake0();
+			lcdCursor(1,2);
+			printString("ON ");
+			onLine |= 0x01;
+		} 
+		/*else if(lVal < kTHRESHOLD_LOW) {
+			lcdCursor(1,2);
+			printString("OFF");
+			onLine &= ~0x01;
+			motor0(150);
+			delayMs(500);
+			motor0(70);
+		}*/
+		
+		if(rVal > kTHRESHOLD_HIGH) {
+			brake1();
+			lcdCursor(1,9);	
+			printString("ON ");
+			onLine |= 0x02;
+		} /*else if(rVal < kTHRESHOLD_LOW) {
+			lcdCursor(1,2);
+			printString("OFF");
+			onLine &= ~0x02;
+			motor1(150);
+			delayMs(500);
+			motor1(70);
+		}*/
+	}
+}
+
+
 /*ISR(SOMEBUTTON_VECTOR) {	
 	//if 2 bump sensors are activated turn right
 	//count the walls that the bot has run into
@@ -164,6 +251,10 @@ void move(s08 speed) {
 	motor1(127-speed);
 }
 
+void reverse(u08 speed) {
+	motor0(127+speed);
+	motor1(127+speed);
+}
 void brake() {
 	brake0();
 	brake1();
@@ -182,17 +273,37 @@ void initInterrupts() {
 	PORTB &= ~(1<<PB4); 
 	//Enable PCINT4 of PINB4
 	PCMSK0 |= (1<<PCINT4);
+	PCMSK0 |= (1<<PCINT7);
 	//Enable to first 8 interrupts of the board (even though there are only 8)
 	PCICR |= (1<<PCIE0);
 	//System wide enable of interrupts
 	sei();
 }
+void gateClose() {
+	servo(0,115);
+}
+void gateOpen() {
+	servo(0,255);
+}
+
 
 ISR(PCINT0_vect) { // Bump Sensor
+	cli();
+	brake();
+	
+	clearScreen();
+	upperLine();
+	printString("Oh No");
+	lowerLine();
+	printString("I am Stuck");
+	
 	motor0(160);
 	motor1(160);
 	delayMs(750);
-	spinRight(50);
-	delayMs(750);
+	//spinRight(50);
+	//delayMs(750);
+	clearScreen();
+	move(0);
+	sei();
 }
 
