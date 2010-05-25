@@ -31,7 +31,7 @@ void countLines(u08 sensor,u08 numLines) {
 		}
 	}
 }
-
+//doesnt work right
 void waitLines(u08 sensor,u08 numLines) {
 	u08 lineCount = 0;
 	u08 val;
@@ -65,29 +65,38 @@ void waitLines(u08 sensor,u08 numLines) {
 
 void getOutOfStartBox() {
 	motor0(70);
-	motor1(80);
-	countLines(TBSENSOR_IR_FRONT,1);
+	motor1(75);
+	countLines(TBSENSOR_IR_LEFT,1);
 	move(70);
 }
 
 void makeRightTurn(u08 r) {
 	
 	move(60);
-	countLines(TBSENSOR_IR_FRONT, 1); 
+	countLines(TBSENSOR_IR_FRONT, 1);
+	if (r == 2 || r == 3) {
+		delayMs(150);
+	}
 	brake();
 	spinRight(40);
 	countLines(TBSENSOR_IR_LEFT, 2);
-	if (r) {
+	if (r == 1 || r == 3) {
 		reverse(60);
 		delayMs(200);
-	}
+	}	
 	squareBackSensors();
 	brake();
+	//square a second time
+	spinRight(40);
+	delayMs(100);
+	reverse(50);
+	delayMs(300);
+	squareBackSensors();
 	
+	brake();
 }
 
 void turnTheCornerRight() {
-	brake();
 	clearScreen();
 	upperLine();
 	printString("Turning!");
@@ -95,22 +104,31 @@ void turnTheCornerRight() {
 	move(70);
 	countLines(TBSENSOR_IR_FRONT, 2);
 	spinRight(40);
-	countLines(TBSENSOR_IR_RIGHT, 1);
-	motor0(80);
-	delayMs(400);
+	countLines(TBSENSOR_IR_LEFT, 1);
 	brake();
-	move(80);
+	motor1(160);
 	countLines(TBSENSOR_IR_FRONT, 1);
+	move(60);
+	delayMs(300);
+	brake();
+	delayMs(30);
+	move(0);
+	
 }
 
 void plowTheCenter() {
 	cli();
+	move(40);
+	delayMs(50);
+	move(80);
+	delayMs(50);
 	move(120);
-	countLines(TBSENSOR_IR_FRONT, 4);
+	countLines(TBSENSOR_IR_FRONT, 5);
 	sei();
-	countLines(TBSENSOR_IR_FRONT, 1);
 	brake();
-	
+	reverse(50);
+	squareBackSensors();
+	move(50);	
 }
 
 
@@ -194,9 +212,9 @@ ISR(PCINT0_vect) { // Bump Sensor
 	lowerLine();
 	printString("I am Stuck");
 	
-	motor0(160);
-	motor1(160);
-	delayMs(750);
+	//motor0(160);
+	//motor1(160);
+	//delayMs(750);
 	//spinRight(50);
 	//delayMs(750);
 	clearScreen();

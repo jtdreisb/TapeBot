@@ -10,6 +10,7 @@ void gateOpen();
 
 int main()
 {
+	
 	initialize();
 	cli();
 	initInterrupts();
@@ -22,19 +23,54 @@ int main()
 	//Turn motors on and wait until not against wall to turn on interrupt
 	sei();
 	
+	gateClose();
 	buttonWait();
 	//Drive around and don't crash
 	getOutOfStartBox();
-	makeRightTurn(1);
+	
+	brake();
+	clearScreen();
+	printString("START - RTURN");
+	
+	makeRightTurn(3);
+	
+	clearScreen();
+	printString("RTURN - PLOW");
+	
 	plowTheCenter();
-	makeRightTurn(0);
+	
+	clearScreen();
+	printString("RTURN");
+	
+	
+	makeRightTurn(1);
+	
+	clearScreen();
+	printString("RCORNER");
+	
 	turnTheCornerRight();
-	makeRightTurn(1);
+	
+	clearScreen();
+	printString("RTURN");
+	
+	makeRightTurn(3);
+	
+	clearScreen();
+	printString("PLOW");
+	
 	plowTheCenter();
-	makeRightTurn(0);
+	
+	clearScreen();
+	printString("PLOW - RTURN");
+	
+	makeRightTurn(3);
 	
 	clearScreen();
 	printString("TapeBot Wins!");
+	
+	gateOpen();
+	buttonWait();
+	gateClose();
 	while(1){
 	}
 }
