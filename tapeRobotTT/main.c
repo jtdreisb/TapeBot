@@ -7,7 +7,7 @@
 
 void getOutOfStartBox(); //does an S move to get out of the box
 void makeRightTurn(u08 r);
-void turnTheCorner(); 
+void turnTheCornerRight();
 void plowTheCenter();
 void countLines(u08 sensor,u08 numLines); // counts till the sensor hits the black
 void waitLines(u08 sensor,u08 numLines); // waits till the sensor is off the line
@@ -26,7 +26,6 @@ int main()
 {
 	initialize();
 	cli();
-	
 	initInterrupts();
 	
 	//Test 1
@@ -34,29 +33,24 @@ int main()
 	printString("    TapeBot V1.0  ");
 	lowerLine();
 	
-	
 	//Turn motors on and wait until not against wall to turn on interrupt
 	sei();
 	
 	buttonWait();
 	//Drive around and don't crash
 	getOutOfStartBox();
-	
 	makeRightTurn(1);
-
-	
 	plowTheCenter();
 	makeRightTurn(0);
-	turnTheCorner();
+	turnTheCornerRight();
 	makeRightTurn(1);
 	plowTheCenter();
-	
+	makeRightTurn(0);
 	
 	clearScreen();
-	printString("Yay it Finished");
+	printString("TapeBot Wins!");
 	while(1){
 	}
-
 }
 
 void getOutOfStartBox() {
@@ -79,11 +73,9 @@ void makeRightTurn(u08 r) {
 	}
 	squareBackSensors();
 	brake();
-	
 }
 
-void turnTheCorner() {
-	brake();
+void turnTheCornerRight() {
 	clearScreen();
 	upperLine();
 	printString("Turning!");
@@ -94,9 +86,9 @@ void turnTheCorner() {
 	countLines(TBSENSOR_IR_RIGHT, 1);
 	motor0(80);
 	delayMs(400);
-	brake();
 	move(80);
 	countLines(TBSENSOR_IR_FRONT, 1);
+	brake();
 }
 
 void plowTheCenter() {
@@ -106,7 +98,6 @@ void plowTheCenter() {
 	sei();
 	countLines(TBSENSOR_IR_FRONT, 1);
 	brake();
-	
 }
 
 
@@ -231,18 +222,6 @@ void squareBackSensors() {
 	
 }
 */
-int findInnerSquare() {
-	//back up past two lines
-	
-	//turn 90 degrees right
-	
-	//forward past two lines
-	
-	//90 degree right
-	
-	//linefollow 
-	return 0;
-}
 
 //Movement functions
 
