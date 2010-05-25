@@ -1,4 +1,4 @@
-#include "../XiphosLibrary/globals.h"
+#include "globals.h"
 #include "serial.h"
 #include <inttypes.h>
 #include <avr/interrupt.h>    // include interrupt support

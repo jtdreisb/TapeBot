@@ -1,4 +1,4 @@
-#include "../XiphosLibrary/globals.h"
+#include "globals.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

@@ -8,7 +8,7 @@ LIB = ../XiphosLibrary
 
 # This list must contain the XiphosLibrary source files that your program needs. Feel free to remove files you don't need.
 PBL = $(LIB)/utility.c $(LIB)/display.c $(LIB)/servos.c $(LIB)/motors.c $(LIB)/adc.c $(LIB)/I2C.c $(LIB)/rtc.c $(LIB)/serial.c
-
+PBL += nav.c 
 # Specify the port name for your In-System Programmer (ISP) device or cable here.
 #  For a FTDI USB-to-UART converter on Windows this is something like COM2 (check in the Windows Device Manager under Ports for the number) 
 #    In XP: Right-click My Computer, click "Properties" then navigate to the "Hardware" tab followed by clicking "Device Manager".

@@ -25,4 +25,7 @@
 #define TBSENSOR_IR_RIGHT 1
 #define TBSENSOR_IR_LEFT  0
 
+
+
+
 #endif //PROJECTGLOBALS_H
