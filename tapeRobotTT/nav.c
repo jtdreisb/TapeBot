@@ -86,7 +86,7 @@ void makeRightTurn(u08 r) {
 	
 }
 
-void turnTheCorner() {
+void turnTheCornerRight() {
 	brake();
 	clearScreen();
 	upperLine();

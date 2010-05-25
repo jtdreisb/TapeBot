@@ -3,8 +3,6 @@
 #include "../XiphosLibrary/globals.h"
 
 
-
-
 void initInterrupts();
 void gateClose();
 void gateOpen();
@@ -14,7 +12,6 @@ int main()
 {
 	initialize();
 	cli();
-	
 	initInterrupts();
 	
 	//Test 1
@@ -22,29 +19,24 @@ int main()
 	printString("    TapeBot V1.0  ");
 	lowerLine();
 	
-	
 	//Turn motors on and wait until not against wall to turn on interrupt
 	sei();
 	
 	buttonWait();
 	//Drive around and don't crash
 	getOutOfStartBox();
-	
 	makeRightTurn(1);
-
-	
 	plowTheCenter();
 	makeRightTurn(0);
-	turnTheCorner();
+	turnTheCornerRight();
 	makeRightTurn(1);
 	plowTheCenter();
-	
+	makeRightTurn(0);
 	
 	clearScreen();
-	printString("Yay it Finished");
+	printString("TapeBot Wins!");
 	while(1){
 	}
-
 }
 
 void initInterrupts() {

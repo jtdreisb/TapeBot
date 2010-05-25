@@ -9,7 +9,7 @@
 
 void getOutOfStartBox(); //does an S move to get out of the box
 void makeRightTurn(u08 r);
-void turnTheCorner(); 
+void turnTheCornerRight();
 void plowTheCenter();
 void countLines(u08 sensor,u08 numLines); // counts till the sensor hits the black
 void waitLines(u08 sensor,u08 numLines); // waits till the sensor is off the line
