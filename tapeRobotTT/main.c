@@ -25,52 +25,20 @@ int main()
 	
 	gateClose();
 	buttonWait();
-	//Drive around and don't crash
+	
 	getOutOfStartBox();
-	
 	brake();
-	clearScreen();
-	printString("START - RTURN");
-	
-	makeRightTurn(3);
-	
-	clearScreen();
-	printString("RTURN - PLOW");
-	
-	plowTheCenter();
-	
-	clearScreen();
-	printString("RTURN");
-	
-	
-	makeRightTurn(1);
-	
-	clearScreen();
-	printString("RCORNER");
-	
-	turnTheCornerRight();
-	
-	clearScreen();
-	printString("RTURN");
-	
-	makeRightTurn(3);
-	
-	clearScreen();
-	printString("PLOW");
-	
-	plowTheCenter();
-	
-	clearScreen();
-	printString("PLOW - RTURN");
-	
-	makeRightTurn(3);
+	crossPattern();
+	innerSquare();
+	buttonWait();
+	spin90Left();	
 	
 	clearScreen();
 	printString("TapeBot Wins!");
-	
 	gateOpen();
 	buttonWait();
 	gateClose();
+	
 	while(1){
 	}
 }
@@ -81,7 +49,7 @@ void initInterrupts() {
 	DDRB |= (1<<DDB4);
 	//Disable internal pullup
 	PORTB &= ~(1<<PB4); 
-	//Enable PCINT4 of PINB4
+	//Enable PCINT4 of PINB4 and PINB7
 	PCMSK0 |= (1<<PCINT4);
 	PCMSK0 |= (1<<PCINT7);
 	//Enable to first 8 interrupts of the board (even though there are only 8)
