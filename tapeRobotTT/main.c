@@ -29,8 +29,11 @@ int main()
 	getOutOfStartBox();
 	brake();
 	crossPattern();
-	innerSquare();
-	buttonWait();	
+	innerSquare();	
+	
+	
+	followEdge();
+	
 	
 	clearScreen();
 	printString("TapeBot Wins!");

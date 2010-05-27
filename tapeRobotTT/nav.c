@@ -45,7 +45,9 @@ void crossPattern() {
 
 void followEdge() {
 	spin90Left();
-	
+	while(1) {
+		makeRightTurn();
+	}
 }
 
 
@@ -61,7 +63,6 @@ void innerSquare() {
 	turnTheInnerCornerRight();
 	clearScreen();
 	printString("Continue");
-	buttonWait();
 }
 
 
@@ -86,11 +87,6 @@ void countLines(u08 sensor,u08 numLines) {
 }
 
 
-
-
-
-
-
 void makeRightTurn(u08 r) {
 	
 	move(50);
@@ -101,8 +97,8 @@ void makeRightTurn(u08 r) {
 	countLines(TBSENSOR_IR_LEFT, 2);
 	reverse(60);
 	if (r == 51) {
-		motor1(210);
-		delayMs(400);
+		motor1(170);
+		delayMs(200);
 	}
 	delayMs(150);
 	move(40);
@@ -193,9 +189,11 @@ void plowTheInner(u08 lines) {
 }
 
 void spin90Left() {
-	spinRight(-40);
+	//Spin like a top
+	motor0(180);
+	motor1(145);
 	delayMs(200);
-	countLines(TBSENSOR_IR_RIGHT, 1);
+	countLines(TBSENSOR_IR_LEFT, 2);
 	reverse(60);
 	delayMs(300);
 	move(60);
