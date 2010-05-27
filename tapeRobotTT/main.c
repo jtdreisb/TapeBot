@@ -30,8 +30,7 @@ int main()
 	brake();
 	crossPattern();
 	innerSquare();
-	buttonWait();
-	spin90Left();	
+	buttonWait();	
 	
 	clearScreen();
 	printString("TapeBot Wins!");

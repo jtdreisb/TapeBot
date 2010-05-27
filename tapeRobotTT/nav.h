@@ -10,6 +10,8 @@
 void getOutOfStartBox(); //does an S move to get out of the box
 void innerSquare();
 void crossPattern();
+void followEdge();
+
 void makeRightTurn(u08 r);
 void turnTheCornerRight();
 void turnTheInnerCornerRight();

@@ -114,6 +114,11 @@ void crossPattern() {
 	makeRightTurn(51);
 }
 
+void followEdge() {
+	spin90Left();
+	
+}
+
 void makeRightTurn(u08 r) {
 	
 	move(50);
@@ -221,6 +226,11 @@ void spin90Left() {
 	countLines(TBSENSOR_IR_RIGHT, 1);
 	reverse(60);
 	delayMs(300);
+	move(60);
+	squareBackSensors(1);
+	reverse(50);
+	delayMs(200);
+	move(50);
 	squareBackSensors(1);
 	brake();
 }
