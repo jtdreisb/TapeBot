@@ -2,65 +2,6 @@
 #include "../XiphosLibrary/globals.h"
 #include "nav.h"
 
-void countLines(u08 sensor,u08 numLines) {
-	u08 lineCount = 0;
-	u08 val;
-	u08 onLine;
-	// upperLine();
-	// printString("Count      lines");
-	// lcdCursor(0, 6);
-	// print_u08(numLines);
-	// lowerLine("Val:");
-	// lcdCursor(1,11); 
-	// print_u08(lineCount);
-	
-	while(lineCount != numLines) {
-		val = analog(sensor);
-		// lcdCursor(1,3);
-		// print_u08(val);
-		if(!onLine) {
-			if(val > kTHRESHOLD_HIGH) {
-				lineCount++;
-				// lcdCursor(1,11); 
-				// print_u08(lineCount);
-				onLine = 1;
-			}
-		} else {
-			if(val < kTHRESHOLD_LOW)
-				onLine = 0;
-		}
-	}
-}
-//doesnt work right
-void waitLines(u08 sensor,u08 numLines) {
-	u08 lineCount = 0;
-	u08 val;
-	u08 onLine;
-	upperLine();
-	printString("Count      lines");
-	lcdCursor(0, 6);
-	print_u08(numLines);
-	lowerLine("Val:");
-	lcdCursor(1,11); 
-	print_u08(lineCount);
-	
-	while(lineCount != numLines) {
-		val = analog(sensor);
-		lcdCursor(1,3);
-		print_u08(val);
-		if(!onLine) {
-			if(val > kTHRESHOLD_HIGH) {
-				onLine = 1;
-			}
-		} else {
-			if(val < kTHRESHOLD_LOW)
-				lineCount++;
-				lcdCursor(1,11); 
-				print_u08(lineCount);
-				onLine = 0;
-		}
-	}
-}
 
 void getOutOfStartBox() {
 	clearScreen();
@@ -70,20 +11,8 @@ void getOutOfStartBox() {
 	countLines(TBSENSOR_IR_LEFT,1);
 	move(70);
 }
-void innerSquare() {
-	clearScreen();
-	printString("RCORNER");
-	turnTheInnerCornerRight();
-	clearScreen();
-	printString("Plow Inner");
-	plowTheInner(2);
-	clearScreen();
-	printString("Turn Inner");
-	turnTheInnerCornerRight();
-	clearScreen();
-	printString("Continue");
-	buttonWait();
-}
+
+
 void crossPattern() {
 	clearScreen();
 	printString("START - RTURN");
@@ -118,6 +47,49 @@ void followEdge() {
 	spin90Left();
 	
 }
+
+
+void innerSquare() {
+	clearScreen();
+	printString("RCORNER");
+	turnTheInnerCornerRight();
+	clearScreen();
+	printString("Plow Inner");
+	plowTheInner(2);
+	clearScreen();
+	printString("Turn Inner");
+	turnTheInnerCornerRight();
+	clearScreen();
+	printString("Continue");
+	buttonWait();
+}
+
+
+void countLines(u08 sensor,u08 numLines) {
+	u08 lineCount = 0;
+	u08 val;
+	u08 onLine;
+
+	
+	while(lineCount != numLines) {
+		val = analog(sensor);
+		if(!onLine) {
+			if(val > kTHRESHOLD_HIGH) {
+				lineCount++;
+				onLine = 1;
+			}
+		} else {
+			if(val < kTHRESHOLD_LOW)
+				onLine = 0;
+		}
+	}
+}
+
+
+
+
+
+
 
 void makeRightTurn(u08 r) {
 	
@@ -274,35 +246,7 @@ void squareBackSensors(u08 brake) {
 	}
 }
 
-void smoothAccelerate(u08 topSpeed) {
-	u08 delay = 19; //slower delay = faster acceleration!
-	u08 intervals = topSpeed / delay;
-	u08 i;
-	for (i = 1; i <= intervals; i++) {
-		move(topSpeed * i/intervals);
-		delayMs(delay);
-	}
-}
 
-void move(s08 speed) {
-	motor0(127-speed);
-	motor1(127-speed);
-}
-
-void reverse(u08 speed) {
-	motor0(127+speed);
-	motor1(127+speed);
-}
-void brake() {
-	brake0();
-	brake1();
-}
-
-void spinRight(s08 delta) {
-	//Spin like a top
-	motor0(127-delta);
-	motor1(127+delta);
-}
 
 ISR(PCINT0_vect) { // Bump Sensor
 	cli();

@@ -21,9 +21,7 @@
 
 //Custom user code should go here
 
-#define TBSENSOR_IR_FRONT 2
-#define TBSENSOR_IR_RIGHT 1
-#define TBSENSOR_IR_LEFT  0
+
 
 
 
