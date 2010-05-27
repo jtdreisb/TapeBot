@@ -46,7 +46,7 @@ void crossPattern() {
 void followEdge() {
 	spin90Left();
 	while(1) {
-		makeRightTurn();
+		//makeRightTurn();
 	}
 }
 

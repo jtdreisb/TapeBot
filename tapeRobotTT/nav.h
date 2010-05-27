@@ -7,10 +7,6 @@
 #define kTHRESHOLD_HIGH 100
 #define kTHRESHOLD_LOW  70
 
-#define TBSENSOR_IR_FRONT 2
-#define TBSENSOR_IR_RIGHT 1
-#define TBSENSOR_IR_LEFT  0
-
 
 //High level (called by Main)
 void getOutOfStartBox(); //does an S move to get out of the box
