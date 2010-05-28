@@ -25,4 +25,6 @@ void plowTheInner(u08 lines);
 void squareBackSensors(u08 brake);
 int  findInnerSquare();
 void spin90Left();
-
+void lineFollow();
+void outerRightCorner();
+void dump();

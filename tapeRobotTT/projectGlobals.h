@@ -2,6 +2,7 @@
 //It enables multiple project folders to share a single copy of the Xiphos library,
 //without needing to modify the library itself to disable unused features.
 //Users can also add their own custom #defines or macros to this file.
+#include "../XiphosLibrary/globals.h"
 
 #ifndef PROJECTGLOBALS_H
 #define PROJECTGLOBALS_H
@@ -21,8 +22,10 @@
 
 //Custom user code should go here
 
+#define TBSENSOR_PROX	  3
 #define TBSENSOR_IR_FRONT 2
 #define TBSENSOR_IR_RIGHT 1
 #define TBSENSOR_IR_LEFT  0
+
 
 #endif //PROJECTGLOBALS_H

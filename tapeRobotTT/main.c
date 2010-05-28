@@ -2,6 +2,8 @@
 
 #include "../XiphosLibrary/globals.h"
 
+#define TEST 0
+
 
 void initInterrupts();
 void gateClose();
@@ -9,12 +11,17 @@ void gateOpen();
 void sensorTest();
 
 
+
 int main()
 {
 	
 	initialize();
 	cli();
-	initInterrupts();
+	//initInterrupts();
+	
+	
+	digitalDirection(0,INPUT);
+	digitalDirection(1,INPUT);
 	
 	//Test 1
 	clearScreen();
@@ -25,15 +32,15 @@ int main()
 	sei();
 	
 	gateClose();
-	
-	sensorTest();
-	
 	buttonWait();
+	if(TEST) {
+		followEdge();
+	} else {
 	
 	getOutOfStartBox();
 	brake();
 	crossPattern();
-	innerSquare();	
+	//innerSquare();	
 	
 	
 	followEdge();
@@ -41,13 +48,16 @@ int main()
 	
 	clearScreen();
 	printString("TapeBot Wins!");
-	gateOpen();
-	buttonWait();
-	gateClose();
+	
+	}
+
+
 	
 	while(1){
 	}
 }
+
+
 
 void initInterrupts() {
 	cli();

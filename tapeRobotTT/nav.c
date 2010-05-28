@@ -2,8 +2,30 @@
 #include "../XiphosLibrary/globals.h"
 #include "nav.h"
 
+u08 dumpable;
+
+// ISR(PCINT0_vect) { // Bump Sensor
+	// cli();
+	// if(dumpable) {
+		// gateOpen();
+		// reverse(30);
+		// delayMs(100);
+		// move(80);
+		// delayMs(50);
+		// brake();
+		// delayMs(2000);
+		// reverse(60);
+		// delayMs(500);
+	// }	
+	// brake();
+	
+	// delayMs(500);
+	// sei();
+// }
+
 
 void getOutOfStartBox() {
+	dumpable = 1;
 	clearScreen();
 	printString(TBSENSOR_IR_RIGHT, TBSENSOR_IR_LEFT);
 	motor0(70);
@@ -36,20 +58,103 @@ void crossPattern() {
 	
 	clearScreen();
 	printString("PLOW");
-	plowTheCenter(4);
+	plowTheCenter(5);
 	
 	clearScreen();
 	printString("PLOW - RTURN");
-	makeRightTurn(51);
+	makeRightTurn(100);
 }
 
 void followEdge() {
-	spin90Left();
+	//spin90Left();
 	while(1) {
-		//makeRightTurn();
+		lineFollow();
+		dump();
+		outerRightCorner();
+		lineFollow();
+		outerRightCorner();
 	}
 }
+void lineFollow() {
+	u08 range, val;
+	motor0(60);
+	motor1(60);
+	while(1) {
+		val = analog(TBSENSOR_IR_FRONT);
+		range = analog(TBSENSOR_PROX);
+		clearScreen();
+		//print_u08(range);
+		if(range < 45) {
+			if(val < kTHRESHOLD_LOW ) {
+				motor1(45);
+			} else if (val > kTHRESHOLD_HIGH) {
+				motor1(70);
+			} else {
+				motor1(60);
+			}
+		} else {
+			brake();
+			break;
+		}
+		
+	}
+	//lowerLine();
+	//printString("WhatsUp");
+	//delayMs(500);
+}
+void outerRightCorner() {
+	u08 prox = analog(TBSENSOR_PROX);
+	motor0(70);
+	motor1(100);
+	delayMs(400);
+	motor1(160);
+	while(prox > 20) {
+		prox = analog(TBSENSOR_PROX);
+	}
+	move(0);
+}
 
+void dump() {
+	cli();
+	move(60);
+	while(!(digitalInput(0) || digitalInput(1)));
+	//on the wall
+	if(digitalInput(0)) {
+		brake1();
+	} else if (digitalInput(1)) {
+		brake0();
+	}
+	delayMs(500);
+	reverse(50);
+	u08 i;
+	for(i=0; i<100; i++) {
+		delayMs(10);
+		if(analog(TBSENSOR_IR_LEFT) > kTHRESHOLD_HIGH) {
+			move(50);
+			while(!(digitalInput(0) || digitalInput(1)));
+			i = 105;
+			clearScreen();
+			printString("FOUND LINE");
+		}
+	}
+	if(i > 101) {
+		gateOpen();
+		delayMs(1000);
+		reverse(50);
+		delayMs(100);
+		move(65);
+		delayMs(1000);
+	}
+
+	brake();
+	delayMs(2000);
+	gateClose();
+	delayMs(400);
+	motor0(210);
+	motor1(200);
+	delayMs(500);
+	sei();
+}
 
 void innerSquare() {
 	clearScreen();
@@ -96,11 +201,7 @@ void makeRightTurn(u08 r) {
 	spinRight(40);
 	countLines(TBSENSOR_IR_LEFT, 2);
 	reverse(60);
-	if (r == 51) {
-		motor1(170);
-		delayMs(200);
-	}
-	delayMs(150);
+	delayMs(350);
 	move(40);
 	squareBackSensors(1);
 	brake();
@@ -246,19 +347,4 @@ void squareBackSensors(u08 brake) {
 
 
 
-ISR(PCINT0_vect) { // Bump Sensor
-	cli();
-	brake();
-	
-	clearScreen();
-	upperLine();
-	printString("Oh No");
-	lowerLine();
-	printString("I am Stuck");
-	delayMs(1000);
-	clearScreen();	
-	
-	move(0);
-	while (1);
-	//sei();
-}
+
