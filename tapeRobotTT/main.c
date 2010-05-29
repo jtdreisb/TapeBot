@@ -89,11 +89,11 @@ void flagStart() {
 }
 
 void flagUp() {
-	servo(1, 202);
+	servo(1, 172);
 }
 
 void flagDown() {
-	servo(1, 5);
+	servo(1, 0);
 }
 
 

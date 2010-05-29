@@ -133,7 +133,8 @@ void outerRightCorner() {
 
 u08 dump() {
 	cli();
-	move(60);
+	motor1(55);
+	motor0(60);
 	u16 timeout = 0;
 	u16 timeout2 = 0;
 	while(!(digitalInput(0) || digitalInput(1))) {
@@ -168,24 +169,28 @@ u08 dump() {
 			i = 105;
 		}
 	}
-	if(i > 101 && timeout != 0 && timeout2 != 0) {
-		gateOpen();
-		delayMs(1000);
-		reverse(35);
-		delayMs(100);
-		move(65);
-		delayMs(300);
+	if( i <= 100 || !timeout || !timeout2 ) {
 		brake();
-		delayMs(2000);
-		gateClose();
-	} else brake();
+		if (i > 102) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	gateOpen();
+	delayMs(1000);
+	reverse(35);
+	delayMs(100);
+	move(65);
+	delayMs(300);
+	brake();
+	delayMs(2000);
+	gateClose();
 	delayMs(400);
 	motor0(220);
 	motor1(200);
 	delayMs(400);
-	sei();
-	if (i > 101) return 1;
-	else return 0;
+	return 1;
 }
 
 void innerSquare() {
@@ -207,9 +212,13 @@ void countLines(u08 sensor,u08 numLines) {
 	u08 lineCount = 0;
 	u08 val;
 	u08 onLine;
-
+	u16 timeout = 0;
 	
 	while(lineCount != numLines) {
+		delayMs(1);
+		timeout++;
+		if (timeout > 7000) break;
+		
 		val = analog(sensor);
 		if(!onLine) {
 			if(val > kTHRESHOLD_HIGH) {
@@ -263,9 +272,10 @@ void turnTheCornerRight() {
 	brake();
 	motor1(180);
 	countLines(TBSENSOR_IR_FRONT, 1);
-	move(60);
+	motor0(60);
+	motor1(65);
 	delayMs(300);
-	brake();	
+		
 }
 
 void turnTheInnerCornerRight() {
@@ -346,10 +356,14 @@ void spin90Left() {
 void squareBackSensors(u08 brake) {
 	u08 rVal,lVal;
 	u08 onLine = 0;
+	u16 timeout = 0;
 	//upperLine();
 	//printString("Left  |   Right ");
 	
 	while(onLine < 3) {
+		delayMs(1);
+		timeout++;
+		if (timeout > 7000) break;
 		lVal = analog(TBSENSOR_IR_LEFT);
 		rVal = analog(TBSENSOR_IR_RIGHT);
 		
