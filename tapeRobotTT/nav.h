@@ -27,4 +27,4 @@ int  findInnerSquare();
 void spin90Left();
 void lineFollow();
 void outerRightCorner();
-void dump();
+u08 dump();

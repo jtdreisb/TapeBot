@@ -9,7 +9,9 @@ void initInterrupts();
 void gateClose();
 void gateOpen();
 void sensorTest();
-
+void flagStart();
+void flagUp();
+void flagDown();
 
 
 int main()
@@ -23,7 +25,6 @@ int main()
 	digitalDirection(0,INPUT);
 	digitalDirection(1,INPUT);
 	
-	//Test 1
 	clearScreen();
 	printString("    TapeBot V1.0  ");
 	lowerLine();
@@ -31,23 +32,25 @@ int main()
 	//Turn motors on and wait until not against wall to turn on interrupt
 	sei();
 	
+	//Test 1
 	gateClose();
 	buttonWait();
 	if(TEST) {
-		followEdge();
+		sensorTest();
 	} else {
-	
-	getOutOfStartBox();
-	brake();
-	crossPattern();
-	//innerSquare();	
-	
-	
-	followEdge();
-	
-	
-	clearScreen();
-	printString("TapeBot Wins!");
+		flagUp();
+		getOutOfStartBox();
+		brake();
+		crossPattern();
+		flagDown();
+		//innerSquare();	
+		
+		
+		followEdge();
+		
+		
+		clearScreen();
+		printString("TapeBot Wins!");
 	
 	}
 
@@ -73,11 +76,24 @@ void initInterrupts() {
 	//System wide enable of interrupts
 	sei();
 }
+
 void gateClose() {
-	servo(0,115);
+	servo(0,110);
 }
+
 void gateOpen() {
 	servo(0,255);
+}
+
+void flagStart() {
+}
+
+void flagUp() {
+	servo(1, 202);
+}
+
+void flagDown() {
+	servo(1, 5);
 }
 
 
@@ -104,7 +120,7 @@ void sensorTest() {
 	while(1) {
 		rVal = analog(TBSENSOR_IR_RIGHT);
 		lVal = analog(TBSENSOR_IR_LEFT);
-		fVal = analog(TBSENSOR_IR_FRONT);
+		fVal = analog(TBSENSOR_PROX);
 		
 		lcdCursor(0,2);
 		print_u08(fVal);
